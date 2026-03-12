@@ -44,7 +44,7 @@ namespace NewWebApplication.Services
             return true;
         }
 
-        public string Login(LoginDto dto)
+        public  LoginResponseDto Login(LoginDto dto)
         {
             var user = _repo.GetUserByEmail(dto.Email);
 
@@ -57,6 +57,16 @@ namespace NewWebApplication.Services
             if (!validPassword)
                 return null;
 
+            return new LoginResponseDto()
+            {
+                Token = CreateToken(user),
+                Role=user.Role,
+            };
+            
+        }
+
+        private string CreateToken(User user)
+        {
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
@@ -75,7 +85,7 @@ namespace NewWebApplication.Services
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.UtcNow.AddMinutes(15),
                 signingCredentials: creds
             );
 

@@ -10,13 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
+    options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
 
 builder.Services.AddSession(options =>
 {
@@ -27,24 +27,29 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-}
+
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseSession();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Login}/{id?}"
 );
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    // Create SQLite database automatically
+    context.Database.EnsureCreated();
+
+    // Seed Admin user
+    DbInitializer.Seed(context);
+}
 
 app.Run();

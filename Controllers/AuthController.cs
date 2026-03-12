@@ -46,27 +46,23 @@ namespace NewWebApplication.Controllers
             if (!ModelState.IsValid)
                 return View(dto);
 
-            var token = _authService.Login(dto);
+            var result = _authService.Login(dto);
 
-            if (token == null)
+            if (result == null)
             {
                 ModelState.AddModelError("Email", "Invalid credentials");
                 return View(dto);
             }
 
-            HttpContext.Session.SetString("AuthToken", token);
+            HttpContext.Session.SetString("AuthToken", result.Token);
+            HttpContext.Session.SetString("UserRole", result.Role);
 
-            return RedirectToAction("Dashboard");
+            if (result.Role == "Admin")
+                return RedirectToAction("AdminDashboard", "Dashboard");
+
+            return RedirectToAction("UserDashboard", "Dashboard");
         }
 
-        public IActionResult Dashboard()
-        {
-            var token = HttpContext.Session.GetString("AuthToken");
-
-            if (token == null)
-                return RedirectToAction("Login");
-
-            return Content("User logged in successfully.");
-        }
+        
     }
 }

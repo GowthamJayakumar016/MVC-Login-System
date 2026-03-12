@@ -1,0 +1,45 @@
+﻿@model List<NewWebApplication.Models.LoanApplication>
+
+<table class="table table-bordered">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Application No</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var app in Model)
+        {
+            <tr>
+
+                <td>@app.ApplicationNumber</td>
+
+                <td>@app.FirstName @app.LastName</td>
+
+                <td>@app.Status</td>
+
+                <td>
+
+                    @if (app.Status == "Approved" || app.Status == "Rejected")
+                    {
+                        <a asp-controller="Loan"
+                           asp-action="ViewRemark"
+                           asp-route-id="@app.Id"
+                           class="btn btn-primary btn-sm">
+                            View Remark
+                        </a>
+                    }
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

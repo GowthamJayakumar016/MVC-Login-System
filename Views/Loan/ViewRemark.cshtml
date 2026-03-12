@@ -1,0 +1,80 @@
+﻿@model NewWebApplication.Models.LoanApplication
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+
+    <h3 class="mb-4">Application Details</h3>
+
+    <table class="table table-bordered">
+
+        <tr>
+            <th>Application Number</th>
+            <td>@Model.ApplicationNumber</td>
+        </tr>
+
+        <tr>
+            <th>Name</th>
+            <td>@Model.FirstName @Model.LastName</td>
+        </tr>
+
+        <tr>
+            <th>PAN</th>
+            <td>@Model.PAN</td>
+        </tr>
+
+        <tr>
+            <th>Annual Income</th>
+            <td>@Model.AnnualIncome</td>
+        </tr>
+
+        <tr>
+            <th>Credit Score</th>
+            <td>@Model.CreditScore</td>
+        </tr>
+
+        <tr>
+            <th>Credit Limit</th>
+            <td>@Model.CreditLimit</td>
+        </tr>
+
+    </table>
+
+    <h4 class="mt-4">Decision Details</h4>
+
+    @if (ViewBag.Decision != null)
+    {
+
+        <table class="table table-bordered">
+
+            <tr>
+                <th>Status</th>
+                <td>@ViewBag.Decision.DecisionType</td>
+            </tr>
+
+            <tr>
+                <th>Remark</th>
+                <td>@ViewBag.Decision.Remark</td>
+            </tr>
+
+            <tr>
+                <th>Action By</th>
+                <td>@ViewBag.Decision.ActionBy</td>
+            </tr>
+
+            <tr>
+                <th>Date</th>
+                <td>@ViewBag.Decision.ActionDate</td>
+            </tr>
+
+        </table>
+
+    }
+
+    <a asp-controller="Loan"
+       asp-action="ViewApplications"
+       class="btn btn-secondary">
+        Back
+    </a>
+
+</div>

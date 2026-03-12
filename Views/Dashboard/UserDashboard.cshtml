@@ -1,0 +1,75 @@
+﻿@using NewWebApplication.Models
+@model List<LoanApplication>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">User Dashboard</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+                <h5>Apply For Loan</h5>
+                <p>Submit a new loan request</p>
+                <a href="/Loan/Apply" class="btn btn-primary">Apply</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+                <h5>View Applications</h5>
+                <p>Track your loan applications</p>
+                <a href="/Loan/ViewApplications" class="btn btn-success">View</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-4 text-center">
+                <h5>Logout</h5>
+                <p>Exit your account</p>
+                <a href="/Auth/Login" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card mt-5 shadow p-4">
+
+        <h4 class="mb-3">Approved Applications</h4>
+
+        <table class="table table-bordered">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Applicant</th>
+                    <th>PAN</th>
+                    <th>Income</th>
+                    <th>Credit Limit</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.FirstName @item.LastName</td>
+                        <td>@item.PAN</td>
+                        <td>@item.AnnualIncome</td>
+                        <td>@item.CreditLimit</td>
+                        <td class="text-success">@item.Status</td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

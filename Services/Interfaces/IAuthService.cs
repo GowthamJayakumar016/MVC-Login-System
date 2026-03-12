@@ -6,6 +6,6 @@ namespace NewWebApplication.Services.Interfaces
     {
         bool Register(RegisterDto dto);
 
-        string Login(LoginDto dto);
+        LoginResponseDto Login(LoginDto dto);
     }
 }
